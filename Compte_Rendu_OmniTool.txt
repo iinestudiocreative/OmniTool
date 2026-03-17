@@ -1,0 +1,41 @@
+# Compte Rendu du Projet : OmniTool
+Date : 16 Février 2026
+
+## 1. Objectif du Projet
+Créer une application web mobile-first ("OmniTool") pour remplacer et améliorer un tableur de comparaison de prix et de gestion de courses. L'accent a été mis sur l'esthétique premium (glassmorphism), la simplicité d'utilisation et l'automatisation.
+
+## 2. Fonctionnalités Implémentées
+
+### 📊 Comparaison de Prix Dynamique
+- Création d'une grille interactive inspirée de votre fichier Google Sheets.
+- **Calcul automatique du prix unitaire** : L'app calcule instantanément le prix à la pièce, au litre ou au gramme pour comparer équitablement des formats différents.
+- **Mise en avant du meilleur prix** : Le prix le plus bas pour chaque produit est surligné en vert.
+- **Thème Premium** : Interface entièrement blanche, lumineuse et moderne avec des effets de flou (Glassmorphism).
+
+### 📸 Scanner de Prix (OCR)
+- Intégration d'un scanner utilisant la caméra du téléphone ou de l'ordinateur.
+- **Reconnaissance optique (OCR)** via Tesseract.js pour lire les prix sur les étiquettes en magasin.
+- **Optimisation de l'image** : Pré-traitement automatique (niveaux de gris et contraste) pour améliorer la précision de la détection.
+- **Accessibilité** : Ajout d'un onglet "Scanner" dédié dans la barre de navigation et d'un bouton scan dans les formulaires d'ajout.
+
+### 🛒 Liste de Courses
+- Système de gestion de liste avec cases à cocher.
+- Possibilité d'ajouter rapidement des produits existants de la base de données.
+- Persistance des données : Vos produits et listes sont sauvegardés localement sur votre appareil.
+
+## 3. Améliorations de Stabilité et Expérience Utilisateur
+- **Dialogues personnalisés** : Remplacement des boîtes de dialogue standards (qui clignotaient sur Mac) par des fenêtres de confirmation élégantes et stables intégrées à l'app.
+- **Support Multi-plateforme** : Optimisation pour une utilisation fluide sur Mac (navigateur) et sur Mobile.
+- **Correction d'erreurs** : Suppression des erreurs 404 (ajout d'un favicon) et amélioration du chargement des ressources OCR.
+
+## 4. Données Importées
+- Création de **7 magasins** (Gyomu Supa, Summit, Amazon, etc.).
+- Importation complète de vos **28 produits** avec les prix et quantités réels issus de votre tableur.
+
+## 5. Comment utiliser l'application
+1. Lancez le serveur local (déjà actif sur le port 8000).
+2. Ouvrez : `http://localhost:8000`
+3. Utilisez l'onglet **Scanner** pour vos nouvelles trouvailles ou l'onglet **Comparer** pour voir où faire vos économies.
+
+---
+Projet réalisé avec succès. OmniTool est maintenant votre couteau suisse pour les courses !
