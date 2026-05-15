@@ -1,8 +1,171 @@
+const initialData = {
+    stores: [
+        { id: 'gyomu', name: 'GYOMU SUPA' },
+        { id: 'summit', name: 'SUMMIT STORE' },
+        { id: 'odakyu', name: 'ODAKYU OX' },
+        { id: 'maruetsu', name: 'MARUETSU' },
+        { id: 'matsumoto', name: 'MATSUMOTO DrugStore' },
+        { id: 'create', name: 'CREATE DrugStore' },
+        { id: 'amazon', name: 'AMAZON' }
+    ],
+    products: [
+        { id: 'p1', name: 'Aubergine', unit: 'pièce' },
+        { id: 'p2', name: 'Avocat', unit: 'pièce' },
+        { id: 'p3', name: 'Banane', unit: 'pièce' },
+        { id: 'p4', name: 'Carottes', unit: 'pièce' },
+        { id: 'p5', name: 'Champignons', unit: 'pièce' },
+        { id: 'p6', name: 'Eau Gazeuse', unit: '1000ml' },
+        { id: 'p7', name: 'Gingembre', unit: 'pièce' },
+        { id: 'p8', name: 'Miel', unit: '1000g' },
+        { id: 'p9', name: 'Oeuf', unit: '10 pcs' },
+        { id: 'p10', name: 'Oil', unit: '1000ml' },
+        { id: 'p11', name: 'Olive oil', unit: 'ml' },
+        { id: 'p12', name: 'Pain de mie x8', unit: 'paquet' },
+        { id: 'p13', name: 'Poivron Jaune', unit: 'pièce' },
+        { id: 'p14', name: 'Poivron Rouge', unit: 'pièce' },
+        { id: 'p15', name: 'Poulet 100g', unit: '100g' },
+        { id: 'p16', name: 'Riz 5kg', unit: '5kg' },
+        { id: 'p17', name: 'Salade fresh', unit: 'pièce' },
+        { id: 'p18', name: 'Thon', unit: 'conserve' },
+        { id: 'p19', name: 'Tomate', unit: 'pièce' },
+        { id: 'p20', name: 'Vinaigre sirop', unit: 'ml' },
+        { id: 'p21', name: 'Vitamine citron x6', unit: 'pack' },
+        { id: 'p22', name: 'Produits vaisselle', unit: '700ml' },
+        { id: 'p23', name: 'Produits gazinière', unit: '400ml' },
+        { id: 'p24', name: 'Lessive', unit: 'g/ml' },
+        { id: 'p25', name: 'Soupline', unit: 'ml' },
+        { id: 'p26', name: 'PQ x12', unit: 'pack' },
+        { id: 'p27', name: 'Toilette sent bon', unit: 'unité' },
+        { id: 'p28', name: 'Eponge x5', unit: 'pack' }
+    ],
+    prices: [
+        // p1 Aubergine
+        { productId: 'p1', storeId: 'gyomu', price: 198, qty: 6, unitPrice: 33 },
+        { productId: 'p1', storeId: 'summit', price: 198, qty: 4, unitPrice: 49.5 },
+        // p2 Avocat
+        { productId: 'p2', storeId: 'gyomu', price: 250, qty: 1, unitPrice: 250 },
+        { productId: 'p2', storeId: 'summit', price: 178, qty: 1, unitPrice: 178 },
+        { productId: 'p2', storeId: 'odakyu', price: 198, qty: 1, unitPrice: 198 },
+        // p3 Banane
+        { productId: 'p3', storeId: 'gyomu', price: 153, qty: 1, unitPrice: 153 },
+        { productId: 'p3', storeId: 'summit', price: 158, qty: 1, unitPrice: 158 },
+        { productId: 'p3', storeId: 'odakyu', price: 158, qty: 1, unitPrice: 158 },
+        // p4 Carottes
+        { productId: 'p4', storeId: 'gyomu', price: 138, qty: 3, unitPrice: 46 },
+        { productId: 'p4', storeId: 'summit', price: 258, qty: 3, unitPrice: 86 },
+        // p5 Champignons
+        { productId: 'p5', storeId: 'gyomu', price: 198, qty: 1, unitPrice: 198 },
+        { productId: 'p5', storeId: 'summit', price: 238, qty: 1, unitPrice: 238 },
+        { productId: 'p5', storeId: 'odakyu', price: 198, qty: 1, unitPrice: 198 },
+        // p6 Eau Gazeuse
+        { productId: 'p6', storeId: 'gyomu', price: 73, qty: 1000, unitPrice: 0.07 },
+        { productId: 'p6', storeId: 'summit', price: 138, qty: 1, unitPrice: 138 },
+        // p7 Gingembre
+        { productId: 'p7', storeId: 'gyomu', price: 198, qty: 1, unitPrice: 198 },
+        { productId: 'p7', storeId: 'odakyu', price: 158, qty: 1, unitPrice: 158 },
+        // p8 Miel
+        { productId: 'p8', storeId: 'gyomu', price: 429, qty: 1000, unitPrice: 0.43 },
+        { productId: 'p8', storeId: 'amazon', price: 862, qty: 1000, unitPrice: 0.86 },
+        // p9 Oeuf
+        { productId: 'p9', storeId: 'gyomu', price: 278, qty: 1, unitPrice: 278 },
+        { productId: 'p9', storeId: 'summit', price: 288, qty: 1, unitPrice: 288 },
+        { productId: 'p9', storeId: 'odakyu', price: 298, qty: 1, unitPrice: 298 },
+        { productId: 'p9', storeId: 'matsumoto', price: 267, qty: 1, unitPrice: 267 },
+        { productId: 'p9', storeId: 'create', price: 246, qty: 1, unitPrice: 246 },
+        // p10 Oil
+        { productId: 'p10', storeId: 'gyomu', price: 321, qty: 1000, unitPrice: 0.32 },
+        { productId: 'p10', storeId: 'summit', price: 473, qty: 1000, unitPrice: 0.47 },
+        { productId: 'p10', storeId: 'amazon', price: 591, qty: 1000, unitPrice: 0.59 },
+        // p11 Olive oil
+        { productId: 'p11', storeId: 'gyomu', price: 754, qty: 916, unitPrice: 0.82 },
+        { productId: 'p11', storeId: 'summit', price: 483, qty: 350, unitPrice: 1.38 },
+        { productId: 'p11', storeId: 'odakyu', price: 1275, qty: 456, unitPrice: 2.80 },
+        { productId: 'p11', storeId: 'amazon', price: 1169, qty: 600, unitPrice: 1.95 },
+        // p12 Pain de mie
+        { productId: 'p12', storeId: 'gyomu', price: 97, qty: 8, unitPrice: 12.13 },
+        { productId: 'p12', storeId: 'odakyu', price: 198, qty: 8, unitPrice: 24.75 },
+        // p13 Poivron Jaune
+        { productId: 'p13', storeId: 'gyomu', price: 298, qty: 1, unitPrice: 298 },
+        { productId: 'p13', storeId: 'matsumoto', price: 198, qty: 2, unitPrice: 99 },
+        // p14 Poivron Rouge
+        { productId: 'p14', storeId: 'gyomu', price: 118, qty: 5, unitPrice: 23.60 },
+        { productId: 'p14', storeId: 'summit', price: 238, qty: 2, unitPrice: 119 },
+        { productId: 'p14', storeId: 'matsumoto', price: 198, qty: 2, unitPrice: 99 },
+        // p15 Poulet 100g
+        { productId: 'p15', storeId: 'gyomu', price: 78, qty: 1, unitPrice: 78 },
+        { productId: 'p15', storeId: 'summit', price: 95, qty: 1, unitPrice: 95 },
+        { productId: 'p15', storeId: 'odakyu', price: 128, qty: 1, unitPrice: 128 },
+        // p16 Riz 5kg
+        { productId: 'p16', storeId: 'gyomu', price: 3340, qty: 5000, unitPrice: 0.67 },
+        { productId: 'p16', storeId: 'summit', price: 4780, qty: 5000, unitPrice: 0.96 },
+        { productId: 'p16', storeId: 'amazon', price: 3250, qty: 5000, unitPrice: 0.65 },
+        // p17 Salade fresh
+        { productId: 'p17', storeId: 'gyomu', price: 128, qty: 1, unitPrice: 128 },
+        { productId: 'p17', storeId: 'summit', price: 89, qty: 1, unitPrice: 89 },
+        { productId: 'p17', storeId: 'odakyu', price: 98, qty: 2, unitPrice: 49 },
+        // p18 Thon
+        { productId: 'p18', storeId: 'gyomu', price: 322, qty: 4, unitPrice: 80.50 },
+        { productId: 'p18', storeId: 'summit', price: 386, qty: 4, unitPrice: 96.50 },
+        { productId: 'p18', storeId: 'maruetsu', price: 366, qty: 3, unitPrice: 122 },
+        { productId: 'p18', storeId: 'amazon', price: 1843, qty: 12, unitPrice: 153.58 },
+        // p19 Tomate
+        { productId: 'p19', storeId: 'gyomu', price: 425, qty: 5, unitPrice: 85 },
+        { productId: 'p19', storeId: 'summit', price: 458, qty: 6, unitPrice: 76.33 },
+        { productId: 'p19', storeId: 'maruetsu', price: 429, qty: 6, unitPrice: 71.50 },
+        // p20 Vinaigre sirop
+        { productId: 'p20', storeId: 'summit', price: 1131, qty: 800, unitPrice: 1.41 },
+        { productId: 'p20', storeId: 'create', price: 775, qty: 900, unitPrice: 0.86 },
+        { productId: 'p20', storeId: 'amazon', price: 2958, qty: 3600, unitPrice: 0.82 },
+        // p21 Vitamine citron x6
+        { productId: 'p21', storeId: 'summit', price: 628, qty: 6, unitPrice: 104.67 },
+        { productId: 'p21', storeId: 'create', price: 537, qty: 6, unitPrice: 89.50 },
+        { productId: 'p21', storeId: 'amazon', price: 2764, qty: 30, unitPrice: 92.13 },
+        // p22 Produits vaisselle
+        { productId: 'p22', storeId: 'summit', price: 348, qty: 1, unitPrice: 348 },
+        { productId: 'p22', storeId: 'matsumoto', price: 298, qty: 1, unitPrice: 298 },
+        // p23 Produits gazinière
+        { productId: 'p23', storeId: 'summit', price: 305, qty: 400, unitPrice: 0.76 },
+        { productId: 'p23', storeId: 'create', price: 239, qty: 400, unitPrice: 0.60 },
+        { productId: 'p23', storeId: 'amazon', price: 1218, qty: 1620, unitPrice: 0.75 },
+        // p24 Lessive
+        { productId: 'p24', storeId: 'summit', price: 448, qty: 900, unitPrice: 0.50 },
+        { productId: 'p24', storeId: 'odakyu', price: 898, qty: 2120, unitPrice: 0.42 },
+        { productId: 'p24', storeId: 'matsumoto', price: 987, qty: 2030, unitPrice: 0.49 },
+        { productId: 'p24', storeId: 'create', price: 849, qty: 2120, unitPrice: 0.40 },
+        { productId: 'p24', storeId: 'amazon', price: 1540, qty: 2630, unitPrice: 0.59 },
+        // p25 Soupline
+        { productId: 'p25', storeId: 'summit', price: 498, qty: 940, unitPrice: 0.53 },
+        { productId: 'p25', storeId: 'odakyu', price: 448, qty: 950, unitPrice: 0.47 },
+        { productId: 'p25', storeId: 'matsumoto', price: 745, qty: 1500, unitPrice: 0.50 },
+        { productId: 'p25', storeId: 'create', price: 658, qty: 1520, unitPrice: 0.43 },
+        { productId: 'p25', storeId: 'amazon', price: 1102, qty: 2000, unitPrice: 0.55 },
+        // p26 PQ
+        { productId: 'p26', storeId: 'summit', price: 358, qty: 8, unitPrice: 44.75 },
+        { productId: 'p26', storeId: 'matsumoto', price: 327, qty: 12, unitPrice: 27.25 },
+        // p27 Toilette sent bon
+        { productId: 'p27', storeId: 'summit', price: 238, qty: 1, unitPrice: 238 },
+        { productId: 'p27', storeId: 'matsumoto', price: 349, qty: 1, unitPrice: 349 },
+        { productId: 'p27', storeId: 'amazon', price: 224, qty: 1, unitPrice: 224 },
+        // p28 Eponge x5
+        { productId: 'p28', storeId: 'gyomu', price: 68, qty: 5, unitPrice: 13.6 },
+        { productId: 'p28', storeId: 'summit', price: 178, qty: 5, unitPrice: 35.6 },
+        { productId: 'p28', storeId: 'matsumoto', price: 128, qty: 5, unitPrice: 25.6 }
+    ]
+};
+
+const getStoredData = (key, defaultValue) => {
+    const stored = localStorage.getItem(key);
+    if (!stored) return defaultValue;
+    const parsed = JSON.parse(stored);
+    if (Array.isArray(parsed) && parsed.length === 0) return defaultValue;
+    return parsed;
+};
+
 const state = {
     view: 'dashboard',
-    stores: JSON.parse(localStorage.getItem('omni_stores')) || [],
-    products: JSON.parse(localStorage.getItem('omni_products')) || [],
-    prices: JSON.parse(localStorage.getItem('omni_prices')) || [],
+    stores: getStoredData('omni_stores', initialData.stores),
+    products: getStoredData('omni_products', initialData.products),
+    prices: getStoredData('omni_prices', initialData.prices),
     shoppingList: JSON.parse(localStorage.getItem('omni_shopping')) || [],
     transport: JSON.parse(localStorage.getItem('omni_transport')) || {
         origin: '',
@@ -32,7 +195,6 @@ const saveState = () => {
     localStorage.setItem('omni_google_key', state.googleApiKey || '');
 };
 
-// --- Custom Dialogs ---
 window.showAlert = (message) => {
     const modal = document.createElement('div');
     modal.className = 'modal-backdrop';
@@ -136,11 +298,14 @@ function renderComparison(container) {
                                 <tr style="border-top: 1px solid var(--glass-border);">
                                     <td class="sticky-col" style="padding: 15px 0;">
                                         <div class="flex justify-between items-start">
-                                            <div>
+                                            <div style="flex: 1; min-width: 80px;">
                                                 <div style="font-weight: 600">${p.name}</div>
                                                 <div class="text-secondary" style="font-size:11px">${p.unit}</div>
                                             </div>
-                                            <button onclick="removeProduct('${p.id}')" style="background:none; border:none; color:var(--danger); font-size:18px; padding:0 5px; cursor:pointer; opacity:0.5" title="Supprimer le produit">×</button>
+                                            <div style="display:flex; flex-direction:column; gap:4px; align-items: flex-end;">
+                                                <button onclick="quickAddToList('${p.id}')" style="background:var(--accent-color); border:none; color:white; border-radius:5px; padding:4px 8px; font-size:10px; cursor:pointer; white-space:nowrap" title="Ajouter à la liste">ADD List</button>
+                                                <button onclick="removeProduct('${p.id}')" style="background:none; border:none; color:var(--danger); font-size:16px; padding:0 5px; cursor:pointer; opacity:0.3" title="Supprimer le produit">×</button>
+                                            </div>
                                         </div>
                                     </td>
                                     ${state.stores.map(s => {
@@ -342,8 +507,10 @@ function renderSettings(container) {
         </div>
         
         <div class="glass-card">
-             <h3>Effacer les données</h3>
-             <button class="primary" style="background:var(--danger)" onclick="clearAllData()">Réinitialiser l'application</button>
+             <h3>Réinitialisation</h3>
+             <p class="text-secondary text-sm">Restaure la liste originale des 28 articles et prix.</p>
+             <button class="primary" style="background:var(--accent-color); margin-bottom:10px" onclick="resetToDefaults()">Restaurer la liste par défaut</button>
+             <button class="primary" style="background:var(--danger)" onclick="clearAllData()">Tout effacer (Vider le cache)</button>
         </div>
     `;
 }
@@ -719,6 +886,13 @@ window.addToList = () => {
     render();
 };
 
+window.quickAddToList = (productId) => {
+    state.shoppingList.push({ productId, note: 'Ajout rapide', checked: false });
+    saveState();
+    showAlert("Produit ajouté à la liste !");
+    render();
+};
+
 window.toggleItem = (index) => {
     state.shoppingList[index].checked = !state.shoppingList[index].checked;
     saveState();
@@ -738,6 +912,15 @@ window.clearAllData = () => {
     });
 };
 
+window.resetToDefaults = () => {
+    showConfirm("Voulez-vous restaurer la liste par défaut ?", () => {
+        localStorage.removeItem('omni_stores');
+        localStorage.removeItem('omni_products');
+        localStorage.removeItem('omni_prices');
+        location.reload();
+    });
+};
+
 
 // --- Scanner & OCR ---
 let cameraStream = null;
@@ -748,7 +931,7 @@ window.startCameraScanner = async (targetInputId, storeId) => {
     const scannerOverlay = document.createElement('div');
     scannerOverlay.className = 'scanner-overlay';
     scannerOverlay.innerHTML = `
-                < video id = "scanner-video" autoplay playsinline ></video >
+        <video id="scanner-video" autoplay playsinline></video>
         <div class="scanner-guide"></div>
         <div id="scanner-result-overlay" class="scanner-result-card" style="display:none">
             <h4 style="margin-bottom:10px; color:var(--text-primary)">Résultat du Scan</h4>
@@ -775,7 +958,7 @@ window.startCameraScanner = async (targetInputId, storeId) => {
         <div id="ocr-status" style="position:absolute; top:80px; width:100%; text-align:center; color:white; background:rgba(0,0,0,0.5); padding:10px; display:none">
             Analyse en cours...
         </div>
-            `;
+    `;
     document.body.appendChild(scannerOverlay);
 
     const video = document.getElementById('scanner-video');
@@ -799,10 +982,9 @@ window.startCameraScanner = async (targetInputId, storeId) => {
         return;
     }
 
-
     captureBtn.onclick = async () => {
-        ocrStatus.style.display = 'block';
         captureBtn.disabled = true;
+        ocrStatus.style.display = 'block';
 
         const canvas = document.createElement('canvas');
         canvas.width = video.videoWidth;
@@ -810,73 +992,56 @@ window.startCameraScanner = async (targetInputId, storeId) => {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(video, 0, 0);
 
-        // Crop to guide area for better OCR
-        const guideW = 250;
-        const guideH = 80;
-
-        // Map guide coordinates (screen) to video coordinates
-        const scaleX = video.videoWidth / video.clientWidth;
-        const scaleY = video.videoHeight / video.clientHeight;
-
-        const cropW = guideW * scaleX;
-        const cropH = guideH * scaleY;
-        const cropX = (video.videoWidth - cropW) / 2;
-        const cropY = (video.videoHeight - cropH) / 2;
+        // Crop center area for better accuracy
+        const cropW = canvas.width * 0.6;
+        const cropH = canvas.height * 0.2;
+        const cropX = (canvas.width - cropW) / 2;
+        const cropY = (canvas.height - cropH) / 2;
 
         const cropCanvas = document.createElement('canvas');
         cropCanvas.width = cropW;
         cropCanvas.height = cropH;
-        const cropCtx = cropCanvas.getContext('2d');
+        cropCanvas.getContext('2d').drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
 
-        // Apply pre-processing (Grayscale + Contrast)
-        cropCtx.filter = 'contrast(200%) grayscale(100%)';
-        cropCtx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
-
-        // Show crop in debug canvas
-        debugCanvas.width = guideW;
-        debugCanvas.height = guideH;
-        debugCanvas.getContext('2d').drawImage(cropCanvas, 0, 0, guideW, guideH);
+        // Show preview in debug canvas
+        debugCanvas.width = cropW;
+        debugCanvas.height = cropH;
+        debugCanvas.getContext('2d').drawImage(cropCanvas, 0, 0);
 
         try {
-            const { data: { text } } = await Tesseract.recognize(cropCanvas, 'eng');
-            console.log("OCR RAW:", text);
-            rawOcrText.innerText = text.trim() || "(Aucun texte détecté)";
+            const { data: { text } } = await Tesseract.recognize(cropCanvas, 'eng', {
+                logger: m => console.log(m)
+            });
 
-            // Extract numbers
-            const numbers = text.replace(/,/g, '').match(/\d+/g);
+            console.log("OCR Result:", text);
+            rawOcrText.innerText = text || "Aucun texte détecté";
 
-            ocrStatus.style.display = 'none';
+            // Find price patterns (numbers with ¥ or just numbers)
+            const prices = text.match(/\d+([.,]\d+)?/g);
+            if (prices && prices.length > 0) {
+                // Find the largest number (usually the price)
+                const mainPrice = Math.max(...prices.map(p => parseFloat(p.replace(',', '.'))));
+                detectedVal.innerText = mainPrice + " ¥";
 
-            if (numbers && numbers.length > 0) {
-                // Heuristic: longest number is often the price
-                const candidate = numbers.sort((a, b) => b.length - a.length)[0];
-                detectedVal.innerText = candidate + ' ¥';
                 resultOverlay.style.display = 'block';
-
                 acceptBtn.onclick = () => {
-                    const priceIn = document.getElementById(targetInputId || 'f-price');
-                    if (priceIn) {
-                        priceIn.value = candidate;
-                        priceIn.dispatchEvent(new Event('input'));
-                        stopCameraScanner();
-                    } else {
-                        // Global scan: maybe we should show the comparison or just alert
-                        showAlert(`Prix détecté: ${candidate}¥. Pour l'enregistrer, ouvrez d'abord un produit.`);
-                        stopCameraScanner();
+                    if (targetInputId) {
+                        const input = document.getElementById(targetInputId);
+                        if (input) input.value = mainPrice;
                     }
+                    stopCameraScanner();
                 };
             } else {
-                resultOverlay.style.display = 'block';
-                detectedVal.innerText = "-- ¥";
-                rawOcrText.innerText = text.trim() || "Rapprochez-vous de l'étiquette.";
+                showAlert("Aucun prix détecté. Essayez de vous rapprocher de l'étiquette.");
+                captureBtn.disabled = false;
             }
         } catch (err) {
             console.error("OCR Error:", err);
-            ocrStatus.style.display = 'none';
+            showAlert("Erreur lors de l'analyse de l'image.");
             captureBtn.disabled = false;
-            showAlert("Erreur lors de l'analyse. Réessayez.");
+        } finally {
+            ocrStatus.style.display = 'none';
         }
-
     };
 };
 
@@ -889,24 +1054,26 @@ window.stopCameraScanner = () => {
     if (overlay) overlay.remove();
 };
 
-// Navigation events
-document.querySelectorAll('.nav-item').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const view = btn.dataset.view;
-        if (view) {
-            switchView(view);
-        }
+// Initialisation des événements de navigation
+const initNav = () => {
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.onclick = () => {
+            const view = btn.dataset.view;
+            if (view) {
+                switchView(view);
+            }
+        };
     });
-});
+};
 
-// Initialize with some default stores if empty
-if (state.stores.length === 0) {
-    state.stores = [
-        { id: '1', name: 'Gyomu Supa' },
-        { id: '2', name: 'Summit' },
-        { id: '3', name: 'Amazon' }
-    ];
+// Auto-fix: force reload if data is outdated (less prices than expected)
+if (state.prices.length < initialData.prices.length) {
+    state.products = [...initialData.products];
+    state.stores = [...initialData.stores];
+    state.prices = [...initialData.prices];
     saveState();
 }
 
+// Initial render & nav
+initNav();
 render();
