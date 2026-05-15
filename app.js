@@ -298,13 +298,13 @@ function renderComparison(container) {
                                 <tr style="border-top: 1px solid var(--glass-border);">
                                     <td class="sticky-col" style="padding: 15px 0;">
                                         <div class="flex justify-between items-start">
-                                            <div style="flex: 1; min-width: 80px;">
-                                                <div style="font-weight: 600">${p.name}</div>
-                                                <div class="text-secondary" style="font-size:11px">${p.unit}</div>
+                                            <div style="flex:1; min-width:0">
+                                                <div style="font-weight:600; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${p.name}</div>
+                                                <div class="text-secondary" style="font-size:9px">${p.unit}</div>
                                             </div>
                                             <div style="display:flex; flex-direction:column; gap:4px; align-items: flex-end;">
-                                                <button onclick="quickAddToList('${p.id}')" style="background:var(--accent-color); border:none; color:white; border-radius:5px; padding:4px 8px; font-size:10px; cursor:pointer; white-space:nowrap" title="Ajouter à la liste">ADD List</button>
-                                                <button onclick="removeProduct('${p.id}')" style="background:none; border:none; color:var(--danger); font-size:16px; padding:0 5px; cursor:pointer; opacity:0.3" title="Supprimer le produit">×</button>
+                                                <button onclick="quickAddToList('${p.id}')" style="background:var(--accent-color); border:none; color:white; border-radius:5px; padding:4px 6px; font-size:9px; line-height:1.1; cursor:pointer; white-space:pre-wrap; width:35px" title="Ajouter à la liste">ADD\nList</button>
+                                                <button onclick="removeProduct('${p.id}')" style="background:none; border:none; color:var(--danger); font-size:14px; padding:0 5px; cursor:pointer; opacity:0.4" title="Supprimer le produit">🗑️</button>
                                             </div>
                                         </div>
                                     </td>

@@ -198,14 +198,17 @@ h1 {
 
 .comparison-grid th {
     text-align: center;
-    font-size: 12px;
-    padding: 10px;
+    font-size: 10px; /* Reduced from 12px */
+    padding: 8px 4px;
     color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .comparison-grid td {
-    padding: 12px 8px;
+    padding: 8px 4px; /* More compact padding */
     border-top: 1px solid var(--glass-border);
+    font-size: 11px; /* Global reduction for the table */
 }
 
 .sticky-col {
