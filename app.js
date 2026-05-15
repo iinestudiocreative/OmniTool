@@ -179,7 +179,7 @@ const state = {
         trainDuration: 0,
         trainChanges: 0
     },
-    googleApiKey: localStorage.getItem('omni_google_key') || window.GOOGLE_API_KEY || '',
+    googleApiKey: localStorage.getItem('omni_google_key') || 'AIzaSyC2hIvXpQB5ctfXGyvsJLwF588fYi8u650',
     parkings: JSON.parse(localStorage.getItem('omni_parkings')) || [],
     activeStoreId: null,
     activeProductId: null
