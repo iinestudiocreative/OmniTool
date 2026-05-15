@@ -1066,13 +1066,24 @@ const initNav = () => {
     });
 };
 
-// Auto-fix: force reload if data is outdated (less prices than expected)
-if (state.prices.length < initialData.prices.length) {
+// Auto-fix: force reload if data is outdated (less than 7 stores or less prices than expected)
+if (state.stores.length < 7 || state.prices.length < 50) {
+    console.log("Forcing data reset to initial defaults...");
     state.products = [...initialData.products];
     state.stores = [...initialData.stores];
     state.prices = [...initialData.prices];
     saveState();
 }
+
+const resetToDefaults = () => {
+    if(confirm("Voulez-vous restaurer les 28 produits et les 7 magasins par défaut ? (Ceci effacera vos modifications personnelles)")) {
+        state.products = [...initialData.products];
+        state.stores = [...initialData.stores];
+        state.prices = [...initialData.prices];
+        saveState();
+        location.reload();
+    }
+};
 
 // Initial render & nav
 initNav();
