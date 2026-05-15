@@ -1,4 +1,4 @@
-const CACHE_NAME = 'omnitool-cache-v1';
+const CACHE_NAME = 'omnitool-v2';
 const urlsToCache = [
     './',
     './index.html',
