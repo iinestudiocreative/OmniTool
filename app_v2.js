@@ -180,9 +180,118 @@ const state = {
         trainChanges: 0
     },
     googleApiKey: localStorage.getItem('omni_google_key') || window.GOOGLE_API_KEY || '',
+    sheetSyncUrl: localStorage.getItem('omni_sheet_url') || '',
     parkings: JSON.parse(localStorage.getItem('omni_parkings')) || [],
     activeStoreId: null,
     activeProductId: null
+};
+
+// --- Sync Utils ---
+const updateSyncIndicator = (status, text) => {
+    let indicator = document.getElementById('sync-status');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'sync-status';
+        document.body.appendChild(indicator);
+    }
+    
+    indicator.style.display = 'flex';
+    indicator.style.opacity = '1';
+    indicator.innerText = text;
+    
+    if (status === 'success') {
+        indicator.style.background = 'rgba(16, 185, 129, 0.15)';
+        indicator.style.color = 'var(--success)';
+        indicator.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+        setTimeout(() => {
+            if (indicator.innerText === text) {
+                indicator.style.opacity = '0';
+                setTimeout(() => {
+                    if (indicator.style.opacity === '0') {
+                        indicator.style.display = 'none';
+                    }
+                }, 300);
+            }
+        }, 3000);
+    } else if (status === 'syncing') {
+        indicator.style.background = 'rgba(99, 102, 241, 0.15)';
+        indicator.style.color = 'var(--accent-color)';
+        indicator.style.border = '1px solid rgba(99, 102, 241, 0.3)';
+    } else if (status === 'error') {
+        indicator.style.background = 'rgba(239, 68, 68, 0.15)';
+        indicator.style.color = 'var(--danger)';
+        indicator.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+    }
+};
+
+window.syncPull = async (showNotification = false) => {
+    const url = state.sheetSyncUrl;
+    if (!url) return;
+    
+    updateSyncIndicator('syncing', 'Synchronisation...');
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            mode: 'cors',
+            redirect: 'follow'
+        });
+        const data = await response.json();
+        if (data && (data.products || data.stores || data.prices)) {
+            if (data.stores && data.stores.length > 0) state.stores = data.stores;
+            if (data.products && data.products.length > 0) state.products = data.products;
+            if (data.prices && data.prices.length > 0) state.prices = data.prices;
+            if (data.shoppingList) state.shoppingList = data.shoppingList;
+            
+            localStorage.setItem('omni_stores', JSON.stringify(state.stores));
+            localStorage.setItem('omni_products', JSON.stringify(state.products));
+            localStorage.setItem('omni_prices', JSON.stringify(state.prices));
+            localStorage.setItem('omni_shopping', JSON.stringify(state.shoppingList));
+            
+            updateSyncIndicator('success', 'Synchronisé 🟢');
+            if (showNotification) {
+                showAlert("Données synchronisées avec succès depuis Google Sheet !");
+            }
+            render();
+        } else {
+            updateSyncIndicator('error', 'Erreur synchro 🔴');
+        }
+    } catch (err) {
+        console.error("Sync pull error:", err);
+        updateSyncIndicator('error', 'Erreur réseau 🔴');
+    }
+};
+
+window.syncPush = async () => {
+    const url = state.sheetSyncUrl;
+    if (!url) return;
+    
+    updateSyncIndicator('syncing', 'Sauvegarde Cloud...');
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            redirect: 'follow',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify({
+                products: state.products,
+                stores: state.stores,
+                prices: state.prices,
+                shoppingList: state.shoppingList
+            })
+        });
+        const result = await response.json();
+        if (result && result.status === 'success') {
+            updateSyncIndicator('success', 'Enregistré 🟢');
+        } else {
+            console.error("Sync push failed:", result);
+            updateSyncIndicator('error', 'Erreur sauvegarde 🔴');
+        }
+    } catch (err) {
+        console.error("Sync push error:", err);
+        updateSyncIndicator('error', 'Erreur réseau 🔴');
+    }
 };
 
 // --- Utils ---
@@ -193,6 +302,11 @@ const saveState = () => {
     localStorage.setItem('omni_shopping', JSON.stringify(state.shoppingList));
     localStorage.setItem('omni_transport', JSON.stringify(state.transport));
     localStorage.setItem('omni_google_key', state.googleApiKey || '');
+    localStorage.setItem('omni_sheet_url', state.sheetSyncUrl || '');
+
+    if (state.sheetSyncUrl) {
+        syncPush();
+    }
 };
 
 window.showAlert = (message) => {
@@ -486,6 +600,22 @@ function renderTransport(container) {
 function renderSettings(container) {
     container.innerHTML = `
         <h1>Paramètres</h1>
+        
+        <div class="glass-card">
+            <h3>Synchronisation Google Sheet</h3>
+            <p class="text-secondary text-sm" style="margin-bottom:10px">Synchronisez tous vos téléphones et ordinateurs en temps réel.</p>
+            <input type="text" id="s-sheet-url" value="${state.sheetSyncUrl || ''}" onchange="updateSheetSyncUrl(this.value)" placeholder="https://script.google.com/macros/s/.../exec">
+            
+            ${state.sheetSyncUrl ? `
+                <div style="display:flex; gap:10px; margin-top:12px; margin-bottom:12px">
+                    <button class="primary" onclick="syncPull(true)" style="background:var(--success); flex:1; font-size:12px; padding:8px 0">🔄 Importer (Pull)</button>
+                    <button class="primary" onclick="syncPush()" style="background:var(--accent-color); flex:1; font-size:12px; padding:8px 0">📤 Exporter (Push)</button>
+                </div>
+            ` : ''}
+            
+            <button class="primary" style="background:none; border:1px solid var(--accent-color); color:var(--accent-color); font-size:12px; padding:8px 0; margin-top:5px" onclick="showSyncInstructions()">📖 Configurer Google Sheet</button>
+        </div>
+
         <div class="glass-card">
             <h3>API Google Maps</h3>
             <p class="text-secondary text-sm" style="margin-bottom:10px">Nécessaire pour le calcul automatique des trajets.</p>
@@ -621,6 +751,120 @@ window.updateTransport = (key, value) => {
 window.updateGoogleKey = (key) => {
     state.googleApiKey = key;
     saveState();
+};
+
+window.updateSheetSyncUrl = (url) => {
+    state.sheetSyncUrl = url.trim();
+    saveState();
+    render();
+    if (state.sheetSyncUrl) {
+        syncPull(true);
+    }
+};
+
+window.showSyncInstructions = () => {
+    const googleAppsScriptCode = `function doGet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  return ContentService.createTextOutput(JSON.stringify({
+    products: getSheetData(ss, "OmniTool_Products"),
+    stores: getSheetData(ss, "OmniTool_Stores"),
+    prices: getSheetData(ss, "OmniTool_Prices"),
+    shoppingList: getSheetData(ss, "OmniTool_ShoppingList")
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (data.products) updateSheet(ss, "OmniTool_Products", data.products, ["id", "name", "unit", "comment"]);
+    if (data.stores) updateSheet(ss, "OmniTool_Stores", data.stores, ["id", "name"]);
+    if (data.prices) updateSheet(ss, "OmniTool_Prices", data.prices, ["productId", "storeId", "price", "qty", "unitPrice"]);
+    if (data.shoppingList) updateSheet(ss, "OmniTool_ShoppingList", data.shoppingList, ["productId", "note", "checked"]);
+    return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function getSheetData(ss, sheetName) {
+  var sheet = ss.getSheetByName(sheetName);
+  if (!sheet) return [];
+  var data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+  var headers = data[0];
+  var list = [];
+  for (var i = 1; i < data.length; i++) {
+    var row = data[i];
+    var obj = {};
+    var hasContent = false;
+    for (var j = 0; j < headers.length; j++) {
+      var val = row[j];
+      if (val !== "") hasContent = true;
+      if (val === "true" || val === true) val = true;
+      else if (val === "false" || val === false) val = false;
+      else if (!isNaN(val) && val !== "") val = Number(val);
+      obj[headers[j]] = val;
+    }
+    if (hasContent) list.push(obj);
+  }
+  return list;
+}
+
+function updateSheet(ss, sheetName, items, keys) {
+  var sheet = ss.getSheetByName(sheetName) || ss.insertSheet(sheetName);
+  sheet.clear();
+  sheet.appendRow(keys);
+  if (items.length === 0) return;
+  var values = items.map(function(item) {
+    return keys.map(function(key) {
+      var val = item[key];
+      return val === undefined || val === null ? "" : val;
+    });
+  });
+  sheet.getRange(2, 1, values.length, keys.length).setValues(values);
+}`;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-backdrop';
+    modal.innerHTML = `
+        <div class="glass-card" style="width:100%; max-width:500px; margin:0 auto; max-height:85vh; overflow-y:auto; text-align:left">
+            <h3 style="margin-bottom:15px">Synchronisation Google Sheet</h3>
+            
+            <ol style="margin-left:20px; margin-bottom:20px; display:flex; flex-direction:column; gap:10px; font-size:13px">
+                <li>Ouvrez votre fichier **Google Sheet**.</li>
+                <li>Dans le menu, cliquez sur **Extensions** &gt; **Apps Script**.</li>
+                <li>Supprimez le code par défaut et collez le script ci-dessous :</li>
+            </ol>
+            
+            <textarea id="apps-script-code-box" readonly style="width:100%; height:120px; font-family:monospace; font-size:10px; padding:10px; border-radius:8px; background:rgba(0,0,0,0.05); border:1px solid var(--glass-border); margin-bottom:15px">${googleAppsScriptCode}</textarea>
+            
+            <button class="primary" style="margin-bottom:20px; background:var(--accent-color)" onclick="copyAppsScriptCode()">📋 Copier le code du script</button>
+            
+            <ol start="4" style="margin-left:20px; margin-bottom:20px; display:flex; flex-direction:column; gap:10px; font-size:13px">
+                <li>Cliquez sur **Enregistrer** (l'icône disquette).</li>
+                <li>Cliquez sur **Déployer** &gt; **Nouveau déploiement**.</li>
+                <li>Sélectionnez le type **Application Web** (icône engrenage).</li>
+                <li>Configurez ainsi :
+                    <br>- *Exécuter en tant que* : **Moi (votre email)**
+                    <br>- *Qui a accès* : **Tout le monde**
+                </li>
+                <li>Cliquez sur **Déployer** (et validez les autorisations d'accès).</li>
+                <li>Copiez l'**URL de l'application Web** et collez-la ci-dessus.</li>
+            </ol>
+            
+            <button class="primary" style="background:var(--text-secondary)" onclick="this.closest('.modal-backdrop').remove()">Fermer</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+};
+
+window.copyAppsScriptCode = () => {
+    const copyText = document.getElementById("apps-script-code-box");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+    showAlert("Code copié dans le presse-papiers ! Collez-le dans Apps Script.");
 };
 
 window.useCurrentLocation = () => {
@@ -1088,3 +1332,8 @@ const resetToDefaults = () => {
 // Initial render & nav
 initNav();
 render();
+
+// Auto-sync on startup if URL is set
+if (state.sheetSyncUrl) {
+    syncPull();
+}
